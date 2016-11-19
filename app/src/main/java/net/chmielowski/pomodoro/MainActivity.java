@@ -9,24 +9,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public final class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        long pomodoroTime = 1000 * 60 * 25;
+        final int MINUTE = 1000 * 60;
+        final long POMODORO = MINUTE * 25;
         findViewById(R.id.main_button_start_pomodoro).setOnClickListener(
-                new StartTimer(pomodoroTime)
+                new StartTimer(POMODORO)
         );
-        long shortBreakTime = 1000 * 60 * 5;
+        final long SHORT_BREAK = 1000 * 60 * 5;
         findViewById(R.id.main_button_start_short).setOnClickListener(
-                new StartTimer(shortBreakTime)
+                new StartTimer(SHORT_BREAK)
         );
-        long longBreakTime = 1000 * 60 * 10;
+        final long LONG_BREAK = 1000 * 60 * 10;
         findViewById(R.id.main_button_start_long).setOnClickListener(
-                new StartTimer(longBreakTime)
+                new StartTimer(LONG_BREAK)
         );
     }
 
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             JobInfo.Builder builder = new JobInfo.Builder(
                     0,
                     new ComponentName(
-                            getApplicationContext(), TestJobService.class)
+                            getApplicationContext(), ShowTimeoutService.class)
             );
             builder.setMinimumLatency(mTime);
             builder.setOverrideDeadline(mTime);
