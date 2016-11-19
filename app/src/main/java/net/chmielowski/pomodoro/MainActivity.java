@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,32 +14,45 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final TextView mTextField = (TextView) findViewById(R.id.main_tv);
 
-
-        findViewById(R.id.main_button_start).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Log.d("pchm", "click");
-                        AlarmManager processTimer =
-                                (AlarmManager) getSystemService(
-                                        ALARM_SERVICE);
-                        Intent intent = new Intent(
-                                getApplicationContext(), Receiver.class);
-                        PendingIntent pendingIntent =
-                                PendingIntent.getBroadcast(
-                                        getApplicationContext(), 0, intent,
-                                        PendingIntent.FLAG_UPDATE_CURRENT
-                                );
-                        processTimer.setExactAndAllowWhileIdle(
-                                AlarmManager.RTC_WAKEUP,
-                                5000,
-                                pendingIntent
-                        );
-                    }
-                }
+        long pomodoroTime = 1000 * 60 * 25;
+        findViewById(R.id.main_button_start_pomodoro).setOnClickListener(
+                new StartTimer(pomodoroTime)
         );
+        long shortBreakTime = 1000 * 60 * 5;
+        findViewById(R.id.main_button_start_short).setOnClickListener(
+                new StartTimer(shortBreakTime)
+        );
+        long longBreakTime = 1000 * 60 * 10;
+        findViewById(R.id.main_button_start_long).setOnClickListener(
+                new StartTimer(longBreakTime)
+        );
+    }
+
+    private class StartTimer implements View.OnClickListener {
+        private final long mTime;
+
+        private StartTimer(long time) {this.mTime = time;}
+
+        @Override
+        public void onClick(View view) {
+            Log.d("pchm", "click");
+            AlarmManager processTimer =
+                    (AlarmManager) getSystemService(
+                            ALARM_SERVICE);
+            Intent intent = new Intent(
+                    getApplicationContext(), Receiver.class);
+            PendingIntent pendingIntent =
+                    PendingIntent.getBroadcast(
+                            getApplicationContext(), 0, intent,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            processTimer.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    mTime,
+                    pendingIntent
+            );
+        }
     }
 }
 
