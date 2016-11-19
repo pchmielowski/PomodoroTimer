@@ -27,15 +27,34 @@ public final class MainActivity extends AppCompatActivity {
         final int MINUTE = 1000 * 60;
         final long POMODORO = MINUTE * 25;
         findViewById(R.id.main_button_start_pomodoro).setOnClickListener(
-                new StartTimer(POMODORO, counter)
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        counter.incrementCounter();
+                        new StartTimer(POMODORO).onClick();
+                        showCounter();
+                    }
+                }
         );
         final long SHORT_BREAK = 1000 * 60 * 5;
         findViewById(R.id.main_button_start_short).setOnClickListener(
-                new StartTimer(SHORT_BREAK, counter)
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new StartTimer(SHORT_BREAK).onClick();
+                    }
+                }
+
         );
         final long LONG_BREAK = 1000 * 60 * 10;
         findViewById(R.id.main_button_start_long).setOnClickListener(
-                new StartTimer(LONG_BREAK, counter)
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new StartTimer(LONG_BREAK).onClick();
+                    }
+                }
+
         );
         showCounter();
     }
@@ -46,7 +65,7 @@ public final class MainActivity extends AppCompatActivity {
                         counter.number()));
     }
 
-    class Counter {
+    static class Counter {
 
         private final SharedPreferences mPrefs;
 
@@ -61,22 +80,17 @@ public final class MainActivity extends AppCompatActivity {
         private void incrementCounter() {
             mPrefs.edit().putLong(
                     "counter", number() + 1).apply();
-            showCounter();
         }
     }
 
-    private class StartTimer implements View.OnClickListener {
+    private class StartTimer {
         private final long mTime;
-        private final Counter mCounter;
 
-        private StartTimer(long time, Counter counter) {
+        private StartTimer(long time) {
             this.mTime = time;
-            mCounter = counter;
         }
 
-        @Override
-        public void onClick(View view) {
-            mCounter.incrementCounter();
+        void onClick() {
             Log.d("pchm", "start for " + String.valueOf(mTime));
             JobInfo.Builder builder = new JobInfo.Builder(
                     0,
@@ -89,7 +103,6 @@ public final class MainActivity extends AppCompatActivity {
                     (JobScheduler) getApplication().getSystemService(
                             Context.JOB_SCHEDULER_SERVICE);
             jobScheduler.schedule(builder.build());
-
         }
     }
 
