@@ -32,6 +32,10 @@ public final class MainActivity extends AppCompatActivity {
                 new StartTimer(LONG_BREAK)
         );
 
+        readLastTime();
+    }
+
+    private void readLastTime() {
         ((TextView) findViewById(R.id.main_tv_last))
                 .setText(String.valueOf(
                         PreferenceManager.getDefaultSharedPreferences(
@@ -45,9 +49,7 @@ public final class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            PreferenceManager.getDefaultSharedPreferences(
-                    MainActivity.this).edit().putLong(
-                    "last", mTime / 1000 / 60).apply();
+            writeLastTime(mTime);
             Log.d("pchm", "start for " + String.valueOf(mTime));
             JobInfo.Builder builder = new JobInfo.Builder(
                     0,
@@ -61,6 +63,12 @@ public final class MainActivity extends AppCompatActivity {
                             Context.JOB_SCHEDULER_SERVICE);
             jobScheduler.schedule(builder.build());
 
+        }
+
+        private void writeLastTime(long mTime) {
+            PreferenceManager.getDefaultSharedPreferences(
+                    MainActivity.this).edit().putLong(
+                    "last", mTime / 1000 / 60).apply();
         }
     }
 
