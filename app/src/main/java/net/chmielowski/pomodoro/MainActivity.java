@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final TextView mTextField = (TextView) findViewById(R.id.main_tv);
 
+
         findViewById(R.id.main_button_start).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
