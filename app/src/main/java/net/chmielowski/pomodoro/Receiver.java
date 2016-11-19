@@ -9,6 +9,6 @@ public class Receiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("pchm", "received");
+        Log.d("pchm", "received 2.0");
     }
 }
