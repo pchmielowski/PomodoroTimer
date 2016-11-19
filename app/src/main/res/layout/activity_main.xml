@@ -11,19 +11,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="net.chmielowski.pomodoro.MainActivity">
 
-    <Button
-        android:id="@+id/main_button_start_pomodoro"
+    <TextView
+        android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/start_pomodoro"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"/>
-
-    <Button
-        android:id="@+id/main_button_start_short"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/short_break"
+        android:id="@+id/main_tv_last"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"/>
 
@@ -32,6 +24,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/long_break"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_below="@+id/main_tv_last"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="45dp"/>
+
+    <Button
+        android:id="@+id/main_button_start_short"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/short_break"
+        android:layout_alignBaseline="@+id/main_button_start_long"
+        android:layout_alignBottom="@+id/main_button_start_long"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/main_button_start_pomodoro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_pomodoro"
+        android:layout_alignBaseline="@+id/main_button_start_short"
+        android:layout_alignBottom="@+id/main_button_start_short"
+        android:layout_alignParentStart="true"/>
 </RelativeLayout>

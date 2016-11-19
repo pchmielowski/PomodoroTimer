@@ -5,9 +5,11 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 public final class MainActivity extends AppCompatActivity {
 
@@ -29,6 +31,11 @@ public final class MainActivity extends AppCompatActivity {
         findViewById(R.id.main_button_start_long).setOnClickListener(
                 new StartTimer(LONG_BREAK)
         );
+
+        ((TextView) findViewById(R.id.main_tv_last))
+                .setText(String.valueOf(
+                        PreferenceManager.getDefaultSharedPreferences(
+                                MainActivity.this).getLong("last", 0)));
     }
 
     private class StartTimer implements View.OnClickListener {
@@ -38,6 +45,9 @@ public final class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+            PreferenceManager.getDefaultSharedPreferences(
+                    MainActivity.this).edit().putLong(
+                    "last", mTime / 1000 / 60).apply();
             Log.d("pchm", "start for " + String.valueOf(mTime));
             JobInfo.Builder builder = new JobInfo.Builder(
                     0,
