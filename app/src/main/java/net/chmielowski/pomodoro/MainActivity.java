@@ -1,8 +1,9 @@
 package net.chmielowski.pomodoro;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Intent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -36,23 +37,22 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            Log.d("pchm", "click");
-            AlarmManager processTimer =
-                    (AlarmManager) getSystemService(
-                            ALARM_SERVICE);
-            Intent intent = new Intent(
-                    getApplicationContext(), Receiver.class);
-            PendingIntent pendingIntent =
-                    PendingIntent.getBroadcast(
-                            getApplicationContext(), 0, intent,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-            processTimer.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP,
-                    mTime,
-                    pendingIntent
+            Log.d("pchm", "start for " + String.valueOf(mTime));
+            JobInfo.Builder builder = new JobInfo.Builder(
+                    0,
+                    new ComponentName(
+                            getApplicationContext(), TestJobService.class)
             );
+            builder.setMinimumLatency(mTime);
+            builder.setOverrideDeadline(mTime);
+            JobScheduler jobScheduler =
+                    (JobScheduler) getApplication().getSystemService(
+                            Context.JOB_SCHEDULER_SERVICE);
+            jobScheduler.schedule(builder.build());
+
         }
     }
+
+
 }
 
