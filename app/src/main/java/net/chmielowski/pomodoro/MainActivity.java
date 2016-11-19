@@ -31,15 +31,25 @@ public final class MainActivity extends AppCompatActivity {
         findViewById(R.id.main_button_start_long).setOnClickListener(
                 new StartTimer(LONG_BREAK)
         );
-
-        readLastTime();
+        showCounter();
     }
 
-    private void readLastTime() {
+    private void showCounter() {
         ((TextView) findViewById(R.id.main_tv_last))
                 .setText(String.valueOf(
-                        PreferenceManager.getDefaultSharedPreferences(
-                                MainActivity.this).getLong("last", 0)));
+                        number()));
+    }
+
+    private long number() {
+        return PreferenceManager.getDefaultSharedPreferences(
+                MainActivity.this).getLong("counter", 0);
+    }
+
+    private void incrementCounter() {
+        PreferenceManager.getDefaultSharedPreferences(
+                MainActivity.this).edit().putLong(
+                "counter", number() + 1).apply();
+        showCounter();
     }
 
     private class StartTimer implements View.OnClickListener {
@@ -49,7 +59,7 @@ public final class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            writeLastTime(mTime);
+            incrementCounter();
             Log.d("pchm", "start for " + String.valueOf(mTime));
             JobInfo.Builder builder = new JobInfo.Builder(
                     0,
@@ -63,12 +73,6 @@ public final class MainActivity extends AppCompatActivity {
                             Context.JOB_SCHEDULER_SERVICE);
             jobScheduler.schedule(builder.build());
 
-        }
-
-        private void writeLastTime(long mTime) {
-            PreferenceManager.getDefaultSharedPreferences(
-                    MainActivity.this).edit().putLong(
-                    "last", mTime / 1000 / 60).apply();
         }
     }
 
