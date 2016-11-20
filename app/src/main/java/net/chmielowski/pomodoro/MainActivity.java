@@ -25,7 +25,8 @@ public final class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         counter.increment();
-                        new JobSchedulerStart(MainActivity.this, POMODORO).perform();
+                        new TimeManagerStart(MainActivity.this, POMODORO)
+                                .perform();
                         showCounter();
                     }
                 }
@@ -35,7 +36,7 @@ public final class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new JobSchedulerStart(MainActivity.this, SHORT_BREAK)
+                        new TimeManagerStart(MainActivity.this, SHORT_BREAK)
                                 .perform();
                     }
                 }
@@ -46,7 +47,8 @@ public final class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new JobSchedulerStart(MainActivity.this, LONG_BREAK).perform();
+                        new TimeManagerStart(MainActivity.this, LONG_BREAK)
+                                .perform();
                     }
                 }
 
