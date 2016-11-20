@@ -6,17 +6,26 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.util.Log;
 
-class JobSchedulerStart implements Start {
-    private final long mTime;
-    private MainActivity mainActivity;
+abstract class AbstractStart {
 
-    JobSchedulerStart(MainActivity mainActivity, long time) {
+    final long mTime;
+    final MainActivity mainActivity;
+
+    AbstractStart(MainActivity mainActivity, long time) {
         this.mainActivity = mainActivity;
         this.mTime = time;
     }
 
+    abstract void perform();
+}
+
+class JobSchedulerStart extends AbstractStart {
+    JobSchedulerStart(MainActivity mainActivity, long time) {
+        super(mainActivity, time);
+    }
+
     @Override
-    public void perform() {
+    void perform() {
         Log.d("pchm", "start for " + String.valueOf(mTime));
         JobInfo.Builder builder = new JobInfo.Builder(
                 0,
