@@ -6,21 +6,24 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.util.Log;
 
-class StartTimer {
-    private MainActivity mainActivity;
+class JobSchedulerStart implements Start {
     private final long mTime;
+    private MainActivity mainActivity;
 
-    StartTimer(MainActivity mainActivity, long time) {
+    JobSchedulerStart(MainActivity mainActivity, long time) {
         this.mainActivity = mainActivity;
         this.mTime = time;
     }
 
-    void perform() {
+    @Override
+    public void perform() {
         Log.d("pchm", "start for " + String.valueOf(mTime));
         JobInfo.Builder builder = new JobInfo.Builder(
                 0,
                 new ComponentName(
-                        mainActivity.getApplicationContext(), ShowTimeoutService.class)
+                        mainActivity.getApplicationContext(),
+                        ShowTimeoutService.class
+                )
         );
         builder.setMinimumLatency(mTime);
         builder.setOverrideDeadline(mTime);
